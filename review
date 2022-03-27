@@ -4,10 +4,10 @@
 
 
 using namespace std;
-char** getOrderedNames(char** names, int n) {
+char** getOrderedNames(char** names, int n,char**arr) {
 
 	//copy names to new arr not in the same address
-	char** arr = new char*[n];
+	 arr = new char*[n];
 	for (int i = 0; i < n; i++) 
 	{
 		arr[i] = new char[strlen(names[i])];
