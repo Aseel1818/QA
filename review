@@ -1,289 +1,186 @@
-# include <iostream>
-# include <string>
-#include <list>
+#include<iostream>
+#include <stdio.h>
+#include <cstring>
+
+
 using namespace std;
+char** getOrderedNames(char** names, int n) {
 
-
-class protocol {
-
-private:
-	static protocol* instancehttp;
-	static protocol* instancessh;
-	static protocol* instancetelnet;
-	static protocol* instancescp;
-	static protocol* instanceftp;
-	static string HTTP;
-	static string SSH;
-	static string TELNET;
-	static string SCP;
-	static string FTP;
-
-	static int  max;
-	static list<string>connections;
-
-
-
-
-
-public:
-
-
-
-
-
-
-
-	protocol* getinstance1(string p1) {
-		if (p1 == "http") {
-			if (max < 3) {
-				if (instancehttp == 0) {
-
-
-					instancehttp = new protocol;
-					connections.push_back(p1);
-					cout << "create new connection" << endl;
-					max++;
-					return instancehttp;
-				}
-
-			}
-			else {
-				cout << "You can't create more than 3 connections" << endl;
-
-			}
-		}
-
-
-		else if (p1 == "ssh") {
-			if (max < 3) {
-				if (instancessh == 0) {
-
-
-
-					instancessh = new protocol;
-					connections.push_back(p1);
-					cout << "create new connection" << endl;
-					max++;
-					return instancessh;
-
-
-				}
-			}
-			else {
-				cout << "You can't create more than 3 connections" << endl;
-
-			}
-
-		}
-
-
-		else if (p1 == "ftp") {
-			if (max < 3) {
-				if (instanceftp == 0) {
-
-
-
-					instanceftp = new protocol;
-					connections.push_back(p1);
-					cout << "create new connection" << endl;
-					max++;
-					return instanceftp;
-				}
-			}
-			else {
-				cout << "You can't create more than 3 connections" << endl;
-			}
-		}
-
-
-		else if (p1 == "scp") {
-			if (max < 3) {
-				if (instancescp == 0) {
-
-
-					instancescp = new protocol;
-					connections.push_back(p1);
-					cout << "create new connection" << endl;
-					max++;
-					return instancescp;
-				}
-			}
-			else {
-				cout << "You can't create more than 3 connections" << endl;
-			}
-		}
-
-
-		else if (p1 == "telnet") {
-			if (max < 3) {
-
-				if (instancetelnet == 0) {
-
-					instancetelnet = new protocol;
-					connections.push_back(p1);
-					cout << "create new connection" << endl;
-					max++;
-					return instancetelnet;
-				}
-			}
-			else {
-				cout << "You can't create more than 3 connections" << endl;
-				return 0;
-			}
-		}
-
-
-
-
-
+	//copy names to new arr not in the same address
+	char** arr = new char*[n];
+	for (int i = 0; i < n; i++) 
+	{
+		arr[i] = new char[strlen(names[i])];
+		strcpy_s(arr[i],strlen(names[i]) + 1, names[i]);
 	}
+	char temp[100];
 
-
-
-
-
-
-
-
-
-	void send(string message) {
-
-		cout << "The new connection is :" << message << endl;
-	}
-
-
-
-	void getcurrentconnection() {
-		cout << "The cuerrent connections are:" << endl;
-		for (string val : connections) {
-			cout << val << ',';
-			cout << endl;
+	// Sorting strings using bubble sort 
+	for (int j = 0; j < n - 1; j++)
+	{
+		for (int i = j + 1; i < n; i++)
+		{
+			if (strcmp(arr[j], arr[i]) > 0)
+			{
+				strcpy_s(temp,strlen(arr[j])+1, arr[j]);
+				strcpy_s(arr[j], strlen(arr[i]) + 1, arr[i]);
+				strcpy_s(arr[i], strlen(temp) + 1, temp);
+			}
 		}
 	}
 
-
-
-
-	bool isrelease(string connectionprotocol3) {
-
-		if (connectionprotocol3 == "http") {
-			if (instancehttp != NULL) {
-
-				instancehttp = NULL;
-				max--;
-				connections.remove(connectionprotocol3);
-				cout << "The connection delete" << endl;
-				return true;
-			}
-			else {
-				cout << "This connection does not exist " << endl;
-				return false;
-			}
+	return arr;
+}
+void printNames(char** names, int n) {
+	for (int i = 0; i < n; i++) {
+		if (*names[i]) {
+			cout << "---------------------------- \n";
+			cout <<" "<< names[i] << endl;	
 		}
-
-
-		else if (connectionprotocol3 == "scp") {
-			if (instancescp != NULL) {
-
-				instancescp = NULL;
-				max--;
-				connections.remove(connectionprotocol3);
-				cout << "The connection delete" << endl;
-				return true;
-			}
-			else {
-				cout << "This connection does not exist " << endl;
-				return false;
-			}
-
-		}
-
-		else if (connectionprotocol3 == "telnet") {
-			if (instancetelnet != NULL) {
-
-				instancetelnet = NULL;
-				max--;
-				connections.remove(connectionprotocol3);
-				cout << "The connection delete" << endl;
-				return true;
-			}
-			else {
-				cout << "This connection does not exist " << endl;
-				return false;
-			}
-
-		}
-
-		else if (connectionprotocol3 == "ftp") {
-			if (instanceftp != NULL) {
-
-				instanceftp = NULL;
-				max--;
-				connections.remove(connectionprotocol3);
-				cout << "The connection delete" << endl;
-				return true;
-			}
-			else {
-				cout << "This connection does not exist " << endl;
-				return false;
-			}
-
-		}
-
-		else if (connectionprotocol3 == "ssh") {
-			if (instancessh != NULL) {
-
-				instancessh = NULL;
-				max--;
-				connections.remove(connectionprotocol3);
-				cout << "The connection delete";
-				return true;
-			}
-			else {
-				cout << "This connection does not exist " << endl;
-				return false;
-			}
-
-		}
-
-		return false;
 	}
-};
 
-int protocol::max = 0;
-protocol* protocol::instancehttp = 0;
-protocol* protocol::instancessh = 0;
-protocol* protocol::instancetelnet = 0;
-protocol* protocol::instancescp = 0;
-protocol* protocol::instanceftp = 0;
+}
+void capitalizeNames(char** names, int n) {
+	
+	for (int i = 0; i < n; i++) {
+		char* p = names[i];
+		if (*p >= 'a' && *p <= 'z')*p -= 32;
+		while (*p) {
+			if (*p == ' ') {
+				if (*(p + 1) >= 'a' && *(p + 1) <= 'z')*(p + 1) -= 32;
+
+			}
+			p++;
+		}
+	}
+}
+void removeShortWords(char** names, int  n) {
+	
+	for (int i = 0; i < n; i++) {
+		char* p = names[i];
+		int scnt = 0;
+		//count word
+		while (*p) {
+			if (*p == ' ')scnt++;
+			p++;
+		}
+
+		scnt++;
+		//make matrix of string to put names in it
+		char** arr = new char*[scnt];
+		for (int j = 0; j < scnt; j++)arr[j] = new char[30];
+		for (int j = 0; j < scnt; j++)strcpy_s(arr[j],1, "");
 
 
-string protocol::HTTP = "http";
-string protocol::SSH = "ssh";
-string protocol::TELNET = "telnet";
-string protocol::SCP = "scp";
-string protocol::FTP = "ftp";
+		p = names[i];
 
-list <string>protocol::connections = list<string>();
+		int start = 0, finish = 0;
+		for (int k = 0; k < scnt; k++) {
+			char* p2 = arr[k];
+			char* p = names[i];
+			for (int z = 0; z < start; z++)p++;
+			while (*p != ' '&&*p) {
+				p++;
+				finish++;
 
+			}
+
+			p = names[i];
+			for (int z = 0; z < start; z++)p++;
+			for (int z = 0; z < finish; z++) {
+				*p2 = *p;
+				p2++;
+				p++;
+			}
+			*p2 = NULL;
+			start += ++finish;
+			finish = 0;
+
+		}
+		p = names[i];
+		char temp[100] = "";
+		int s = 0;
+		for (int k = 0; k < scnt; k++) {
+			char* p2 = arr[k];
+			if (strlen(p2) >= 3) {
+				while (*p2) {
+					temp[s++] = *p2++;
+				}
+
+				if (k + 1 == scnt)temp[s] = NULL;
+				else
+					temp[s++] = ' ';
+
+			}
+		}
+
+		strcpy_s(names[i],strlen(temp)+1, temp);
+
+	}
+}
 
 int main() {
 
 
-	protocol c;
 
 
+	//(1) create a two dimensional array of characters to store a list of names entered by user.
+	// -- The number of names is entered by users
+	// -- The space allocated for each name should be dynamic and suit the length of the name in order not to waste much space.
+	// -- The names might contain white spaces
+	int n;// the nember of names entered by user
+	
+	cout << " \n Please enter the number of names: ";
+	cin >> n; cout << endl;
+	char** names;
+	names = new char*[n];
+	char t[100];
+	gets_s(t, 100);
+	
+	for (int i = 0; i < n; i++) {
+		cout << " Enter your name " << i + 1<<" :";
+		gets_s(t, 100);
+		names[i] = new char[strlen(t)];
+		strcpy_s(names[i],strlen(t)+1, t);
+	}
 
-	c.getinstance1("http");
-	c.getinstance1("http");
+	
+	//(2) Implement the function 'getOrderedNames' retrun a list of names ordered alphabetically. 
+	// -- Note that you should not change the content of the passed array.
+	// -- Instead, you should return a new dymanic array of characters.
+	char** orderedNames = getOrderedNames(names, n);
 
-	c.getinstance1("ssh");
-	c.getinstance1("ftp");
+	
+	//(3) Implement the function 'printNames' to print the list of ordered names
+	cout << "___________________________________________ \n";
+	cout << "\n The Names after ordered \n\n";
+	printNames(orderedNames, n);
 
-	c.isrelease("ftp");
-	c.getinstance1("telnet");
-	c.getinstance1("scp");
-	c.isrelease("ftp");
+	
 
+	//(4) Implement the function 'capitalizeNames' to capitalize each word in each name
+	// -- Note: you are not allowed to use the array notation here in 'capitalizeNames'
+	capitalizeNames(names, n);
+
+	// names after capitalization
+	cout << "___________________________________________ \n";
+	cout << "\n The names after capitalization are: \n\n";
+	printNames(names, n);
+	
+
+	
+	// (5) Implement removeShortWords function that omit each word whose length is less than 3 in each name.
+	// -- Note: you are not allowed to use the array notation here in 'removeShortWords'
+	removeShortWords(names, n);
+	// names after cleaning
+	cout << "___________________________________________ \n";
+	cout << "\n The names after cleaning are: \n";
+	printNames(names, n);
+
+
+	
+	cout << "\n___________________________________________ \n";
+	cout << "\n Program End \n\n ";
 	return 0;
+
 }
